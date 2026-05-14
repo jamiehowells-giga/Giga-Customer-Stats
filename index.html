@@ -3,6 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  (function() {
+    const correct = 'avengers';
+    const stored = sessionStorage.getItem('giga_auth');
+    if (stored === correct) return;
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.style.display = 'none';
+    });
+    const pwd = prompt('🔒 Giga Internal — Enter password:');
+    if (pwd === correct) {
+      sessionStorage.setItem('giga_auth', correct);
+    } else {
+      document.write('<div style="background:#0a0b0f;color:#7b7f9e;height:100vh;display:flex;align-items:center;justify-content:center;font-family:sans-serif;font-size:14px;">Access denied.</div>');
+      document.close();
+    }
+  })();
+</script>
 <title>Giga — Customer Outcomes & Nuggets</title>
 <style>
   :root {
