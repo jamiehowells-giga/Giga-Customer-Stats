@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giga — Customer Outcomes & Nuggets</title>
+<style>
+  :root {
+    --bg: #0a0b0f;
+    --surface: #13151c;
+    --surface2: #1c1f2e;
+    --border: #252840;
+    --accent: #6c63ff;
+    --accent2: #00d2b4;
+    --text: #e8eaf6;
+    --text-muted: #7b7f9e;
+    --live: #00d2b4;
+    --pilot: #f59e0b;
+    --pipeline: #6c63ff;
+    --fintech: #ec4899;
+    --telecom: #3b82f6;
+    --realestate: #10b981;
+    --ecommerce: #f97316;
+    --restaurant: #ef4444;
+    --crypto: #8b5cf6;
+    --metals: #d97706;
+    --health: #06b6d4;
+    --tech: #84cc16;
+    --other: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0a0b0f 0%, #13151c 50%, #1a1040 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 32px 20px;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .logo {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #fff;
+  }
+  .logo span { color: var(--accent); }
+  .last-updated {
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--surface2);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  /* STAT BAR */
+  .stat-bar {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .stat-bar::-webkit-scrollbar { display: none; }
+  .stat {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    min-width: 185px;
+    flex-shrink: 0;
+  }
+  .stat-val {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent2);
+    line-height: 1.1;
+  }
+  .stat-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .stat-company {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 1px;
+  }
+
+  /* FILTERS */
+  .filters {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .filter-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .filter-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .pill {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.15s;
+    background: var(--surface2);
+    color: var(--text-muted);
+    user-select: none;
+  }
+  .pill:hover { color: var(--text); border-color: var(--border); }
+  .pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .pill.stage-live.active { background: var(--live); border-color: var(--live); color: #000; }
+  .pill.stage-pilot.active { background: var(--pilot); border-color: var(--pilot); color: #000; }
+
+  .search-wrap { margin-left: auto; }
+  .search-input {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--text);
+    width: 220px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-muted); }
+
+  /* RESULTS COUNT */
+  .results-bar {
+    padding: 10px 32px;
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--bg);
+  }
+  .results-bar strong { color: var(--text); }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+    padding: 16px 32px 40px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 14px 14px 0 0;
+  }
+  .card.live::before { background: var(--live); }
+  .card.pilot::before { background: var(--pilot); }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    border-color: rgba(108,99,255,0.3);
+  }
+  .card.hidden { display: none; }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .card-badges {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .stage-badge.live { background: rgba(0,210,180,0.15); color: var(--live); border: 1px solid rgba(0,210,180,0.3); }
+  .stage-badge.pilot { background: rgba(245,158,11,0.15); color: var(--pilot); border: 1px solid rgba(245,158,11,0.3); }
+
+  .vertical-badge.fintech { background: rgba(236,72,153,0.15); color: var(--fintech); border: 1px solid rgba(236,72,153,0.25); }
+  .vertical-badge.telecom { background: rgba(59,130,246,0.15); color: var(--telecom); border: 1px solid rgba(59,130,246,0.25); }
+  .vertical-badge.realestate { background: rgba(16,185,129,0.15); color: var(--realestate); border: 1px solid rgba(16,185,129,0.25); }
+  .vertical-badge.ecommerce { background: rgba(249,115,22,0.15); color: var(--ecommerce); border: 1px solid rgba(249,115,22,0.25); }
+  .vertical-badge.restaurant { background: rgba(239,68,68,0.15); color: var(--restaurant); border: 1px solid rgba(239,68,68,0.25); }
+  .vertical-badge.crypto { background: rgba(139,92,246,0.15); color: var(--crypto); border: 1px solid rgba(139,92,246,0.25); }
+  .vertical-badge.metals { background: rgba(217,119,6,0.15); color: var(--metals); border: 1px solid rgba(217,119,6,0.25); }
+  .vertical-badge.health { background: rgba(6,182,212,0.15); color: var(--health); border: 1px solid rgba(6,182,212,0.25); }
+  .vertical-badge.tech { background: rgba(132,204,22,0.15); color: var(--tech); border: 1px solid rgba(132,204,22,0.25); }
+  .vertical-badge.other { background: rgba(100,116,139,0.15); color: var(--other); border: 1px solid rgba(100,116,139,0.25); }
+
+  .card-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .card-descriptor {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  .use-case {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    border-left: 2px solid var(--border);
+    padding-left: 10px;
+  }
+
+  .metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .metric {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .metric-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    margin-top: 1px;
+  }
+  .metric-text { line-height: 1.4; color: var(--text); }
+  .metric-text strong { color: var(--accent2); font-weight: 700; }
+
+  .win-reason {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+  .win-reason-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .deal-size {
+    font-size: 11px;
+    color: var(--text-muted);
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .deal-size span { color: var(--text); font-weight: 600; }
+
+  /* SECTION DIVIDERS */
+  .section-header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0 4px;
+  }
+  .section-header-text {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .section-header-text.live { color: var(--live); }
+  .section-header-text.pilot { color: var(--pilot); }
+  .section-header-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-header-count {
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state h3 { font-size: 18px; margin-bottom: 8px; color: var(--text); }
+
+  /* DISCLAIMER */
+  .disclaimer {
+    text-align: center;
+    padding: 16px 32px;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    line-height: 1.6;
+  }
+  .disclaimer strong { color: var(--pilot); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="logo">GIGA <span>//</span> Customer Intelligence</div>
+    <div class="last-updated">Last updated: May 13, 2026 · Source: Gong + Slack</div>
+  </div>
+  <div class="stat-bar">
+    <div class="stat">
+      <div class="stat-val">$500K</div>
+      <div class="stat-label">Full TCV Paid Upfront · 2-Yr</div>
+      <div class="stat-company">Top 3 Largest Telecom in the World</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">82%</div>
+      <div class="stat-label">Email Resolution in 30 Days</div>
+      <div class="stat-company">Largest Real Estate Tech Co.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">2x+</div>
+      <div class="stat-label">Resolution Improvement in 2 Months</div>
+      <div class="stat-company">Largest Restaurant Fintech Co.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">80–85%</div>
+      <div class="stat-label">Chat Resolution Rate</div>
+      <div class="stat-company">Largest Crypto Exchange</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">60%</div>
+      <div class="stat-label">Hallucination Rate Reduction</div>
+      <div class="stat-company">DoorDash</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">$400K</div>
+      <div class="stat-label">Deposits from 4K Outbound Calls</div>
+      <div class="stat-company">Largest Crypto/Forex Platform, EU</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">20%</div>
+      <div class="stat-label">Immediate Workforce Reduction</div>
+      <div class="stat-company">JM Bullion</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">10 Min</div>
+      <div class="stat-label">Emergency Cutover — ALL Calls</div>
+      <div class="stat-company">JM Bullion</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">96%</div>
+      <div class="stat-label">Positive Sentiment Score (Steady)</div>
+      <div class="stat-company">JM Bullion</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">2 Wks</div>
+      <div class="stat-label">Fastest Deploy (12-Co. Eval)</div>
+      <div class="stat-company">DoorDash</div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <div class="filter-group">
+    <span class="filter-label">Stage</span>
+    <div class="filter-pills" id="stage-filters">
+      <div class="pill active" data-filter="stage" data-value="all">All</div>
+      <div class="pill stage-live" data-filter="stage" data-value="live">Live Customer</div>
+      <div class="pill stage-pilot" data-filter="stage" data-value="pilot">Active Pilot</div>
+    </div>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Vertical</span>
+    <div class="filter-pills" id="vertical-filters">
+      <div class="pill active" data-filter="vertical" data-value="all">All</div>
+      <div class="pill" data-filter="vertical" data-value="fintech">Fintech</div>
+      <div class="pill" data-filter="vertical" data-value="telecom">Telecom</div>
+      <div class="pill" data-filter="vertical" data-value="crypto">Crypto</div>
+      <div class="pill" data-filter="vertical" data-value="realestate">Real Estate</div>
+      <div class="pill" data-filter="vertical" data-value="restaurant">Restaurant Tech</div>
+      <div class="pill" data-filter="vertical" data-value="ecommerce">E-Commerce</div>
+      <div class="pill" data-filter="vertical" data-value="health">Healthcare</div>
+      <div class="pill" data-filter="vertical" data-value="tech">Tech</div>
+      <div class="pill" data-filter="vertical" data-value="metals">Precious Metals</div>
+      <div class="pill" data-filter="vertical" data-value="other">Other</div>
+    </div>
+  </div>
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="search" placeholder="Search accounts, metrics…">
+  </div>
+</div>
+
+<div class="results-bar">
+  Showing <strong id="result-count">0</strong> accounts
+</div>
+
+<!-- GRID -->
+<div class="grid" id="card-grid">
+
+  <!-- ═══════════════════ LIVE CUSTOMERS ═══════════════════ -->
+  <div class="section-header" data-section="live">
+    <span class="section-header-text live">● Live Customers</span>
+    <div class="section-header-line"></div>
+    <span class="section-header-count" id="live-count"></span>
+  </div>
+
+  <!-- TOP 3 LARGEST TELECOM IN THE WORLD (AT&T) -->
+  <div class="card live" data-stage="live" data-vertical="telecom" data-search="telecom telco carrier voice ai resolution containment google dialogflow sierra bonsai">
+    <div class="card-top">
+      <div>
+        <div class="card-name">Top 3 Largest Telecom in the World</div>
+        <div class="card-descriptor">U.S. carrier · Voice AI · 1M calls/day</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge live">Live Customer</div>
+        <div class="badge vertical-badge telecom">Telecom</div>
+      </div>
+    </div>
+    <div class="use-case">First-ever AI voice containment deployment at a top-3 global telecom. 1 million inbound calls every single day — Giga handling end-to-end containment, CSAT, and agent assist at massive scale.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">💰</div>
+        <div class="metric-text"><strong>$500K TCV paid UPFRONT</strong> — $250K ACV, 2-year contract; $0.50/call after 1M calls</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">📞</div>
+        <div class="metric-text">Carrier handles <strong>1 million calls every day</strong> — 92% consumer traffic, 650 identified intents</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🏆</div>
+        <div class="metric-text">First company EVER to change their <strong>Supplier AI Requirements (SAIR)</strong> — required CDO sign-off</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">💬</div>
+        <div class="metric-text">AVP feedback on first demo: <strong>"beyond extremely better than what we have been doing with Google"</strong></div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">📊</div>
+        <div class="metric-text">Pilot ramp: 10–15K → 25–50K → <strong>500K final batch</strong> for containment + CSAT evaluation</div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Won</div>
+      Outperformed Google Dialogflow (incumbent), Sierra, and Bonsai on first demo. Navigated complex procurement by framing as "backup speech assistant." 2.5M IVR + 3.5M agent transcripts shared for model training.
+    </div>
+    <div class="deal-size">
+      <span>$250K ACV · $500K TCV Upfront</span><span>Pilot ramp in progress</span>
+    </div>
+  </div>
+
+  <!-- DOORDASH -->
+  <div class="card live" data-stage="live" data-vertical="ecommerce" data-search="doordash delivery dasher food api hallucination resolution 3-way concurrent">
+    <div class="card-top">
+      <div>
+        <div class="card-name">DoorDash</div>
+        <div class="card-descriptor">Food delivery platform · Multi-party voice AI</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge live">Live Customer</div>
+        <div class="badge vertical-badge ecommerce">E-Commerce</div>
+      </div>
+    </div>
+    <div class="use-case">Complex 3-way call AI: Giga manages simultaneous calls between dashers AND customers — one of the most sophisticated AI routing deployments in the market. Handling tens to hundreds of thousands of calls/month.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">⚡</div>
+        <div class="metric-text">Deployed in <strong>2 weeks</strong> — fastest in a 12-company evaluation</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">📉</div>
+        <div class="metric-text"><strong>Hallucination rate reduced 60%</strong> — 3x lower than the frontier model average</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">📈</div>
+        <div class="metric-text"><strong>8% resolution improvement within 24 hours</strong> of identifying and closing an API gap</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">💵</div>
+        <div class="metric-text">Against $700M annual support spend — Giga estimated to unlock <strong>$420M in savings potential</strong></div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Won</div>
+      Speed of deployment (2 weeks vs. months), reliability at scale, and unique ability to handle 3-way concurrent call routing between dasher + customer simultaneously.
+    </div>
+    <div class="deal-size">
+      <span>Enterprise · Ongoing</span><span>Weekly syncs · Expanding use cases</span>
+    </div>
+  </div>
+
+  <!-- COINBASE -->
+  <div class="card live" data-stage="live" data-vertical="crypto" data-search="coinbase crypto bitcoin exchange wallet account recovery authentication chat voice amazon connect multilingual">
+    <div class="card-top">
+      <div>
+        <div class="card-name">Largest Crypto Exchange</div>
+        <div class="card-descriptor">100M+ users globally · Voice + Chat AI</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge live">Live Customer</div>
+        <div class="badge vertical-badge crypto">Crypto</div>
+      </div>
+    </div>
+    <div class="use-case">Full-stack voice + chat AI handling complex unauthenticated support, account recovery, and multilingual interactions via Amazon Connect. 99+ language support via translation agents live in production.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">💬</div>
+        <div class="metric-text"><strong>80–85% resolution rate on chat</strong> · ~60% on voice — live in production</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🌍</div>
+        <div class="metric-text">Deployed <strong>99+ language translation agents</strong> — German, French, and more live on Amazon Connect</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🔐</div>
+        <div class="metric-text">Handles <strong>3-hour account recovery calls</strong> for unauthenticated users — among the most complex support flows in fintech</div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Won</div>
+      Native Amazon Connect integration, multilingual capabilities at launch, and ability to handle unauthenticated security-sensitive flows that competitors couldn't support.
+    </div>
+    <div class="deal-size">
+      <span>Enterprise · Active</span><span>Weekly syncs · Amazon Connect</span>
+    </div>
+  </div>
+
+  <!-- CAPITAL.COM -->
+  <div class="card live" data-stage="live" data-vertical="crypto" data-search="capital.com forex trading crypto deposits outbound reactivation compliance verification europe middle east BDR">
+    <div class="card-top">
+      <div>
+        <div class="card-name">Largest Crypto/Forex Platform in Europe</div>
+        <div class="card-descriptor">Capital.com · Outbound AI + Inbound Voice</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge live">Live Customer</div>
+        <div class="badge vertical-badge crypto">Crypto / Forex</div>
+      </div>
+    </div>
+    <div class="use-case">Outbound AI acting as BDR — reactivation calls to dormant customers across the Middle East and Europe. Recently expanded to inbound voice use case. Two distinct motions proving Giga's full-funnel flexibility.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">💰</div>
+        <div class="metric-text"><strong>$400K in deposits generated</strong> from just 4,000 outbound AI reactivation calls — direct revenue attribution</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">📞</div>
+        <div class="metric-text">Outbound BDR AI deployed across <strong>Middle East + Europe markets</strong></div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🆕</div>
+        <div class="metric-text">Recently added <strong>inbound voice use case</strong> — now running both inbound and outbound simultaneously</div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Won</div>
+      Unique outbound BDR capability — $400K deposits from 4K calls is direct revenue proof. Multi-motion deployment (outbound + inbound) demonstrates platform breadth no competitor can match.
+    </div>
+    <div class="deal-size">
+      <span>Active · Weekly Eng Syncs</span><span>Outbound BDR + Inbound Voice</span>
+    </div>
+  </div>
+
+  <!-- LOWE'S -->
+  <div class="card live" data-stage="live" data-vertical="other" data-search="lowes retail home improvement IT service desk ITSD helpdesk store associates password zebra device cisco">
+    <div class="card-top">
+      <div>
+        <div class="card-name">Lowe's</div>
+        <div class="card-descriptor">$86.3B revenue · 1,748 stores · ITSD pilot</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge live">Live Customer</div>
+        <div class="badge vertical-badge other">Retail / Enterprise IT</div>
+      </div>
+    </div>
+    <div class="use-case">IT Service Desk (ITSD) AI for 300K store associates — handling Zebra device issues, password lockouts, checkout register problems. 6-store pilot rollout with target to reduce GSD headcount ~50%.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">🏪</div>
+        <div class="metric-text"><strong>6-store pilot rollout</strong> — targeting ~50% headcount reduction from ~300 IT agents</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">📊</div>
+        <div class="metric-text">Success metrics: call volume, AHT, <strong>"swap accuracy"</strong> — reducing unnecessary device swaps = direct cost savings</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🎉</div>
+        <div class="metric-text">Kickoff: 20+ Lowe's attendees from 5 teams; <strong>"gave clapping emojis"</strong> — strong internal champions across org</div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Won</div>
+      Enterprise IT use case differentiation. Helix Remedy KB integration (600 articles). Cisco IVR integration. 1,500 calls/chats no-cost ceiling + $3M liability cap — signed MSA/NDA complete.
+    </div>
+    <div class="deal-size">
+      <span>$1M · Stage 3 · Signed</span><span>Cisco IVR + Helix Remedy</span>
+    </div>
+  </div>
+
+  <!-- JM BULLION -->
+  <div class="card live" data-stage="live" data-vertical="metals" data-search="jm bullion gold silver precious metals retail ecommerce phone support emergency cutover workforce sentiment">
+    <div class="card-top">
+      <div>
+        <div class="card-name">JM Bullion</div>
+        <div class="card-descriptor">Gold.com subsidiary · Precious metals retail · Multi-brand</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge live">Live Customer</div>
+        <div class="badge vertical-badge metals">Precious Metals</div>
+      </div>
+    </div>
+    <div class="use-case">AI voice support for precious metals e-commerce. Multi-brand portfolio (Gold.com family) onboarding. Proved Giga's reliability in a real-world emergency — and drove immediate workforce reduction.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">👥</div>
+        <div class="metric-text">8-week deployment → <strong>immediate 20% workforce reduction</strong></div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">⭐</div>
+        <div class="metric-text"><strong>96% positive sentiment score</strong> — steady, maintained over time</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🚨</div>
+        <div class="metric-text">Phone system went down → <strong>Giga flipped switch to handle ALL calls in 10 minutes</strong> — zero downtime</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🏢</div>
+        <div class="metric-text"><strong>Multiple brands</strong> in the Gold.com portfolio now onboarding — footprint expanding</div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Won</div>
+      10-minute emergency cutover proved real-world reliability. 20% immediate workforce reduction. 96% positive sentiment. Multi-brand expansion already underway.
+    </div>
+    <div class="deal-size">
+      <span>$170K ACV · Signed</span><span>Multi-brand expansion in progress</span>
+    </div>
+  </div>
+
+  <!-- REMEDY MEDS -->
+  <div class="card live" data-stage="live" data-vertical="health" data-search="remedy meds telehealth healthcare appointment booking voice talkdesk medical brands acquiring">
+    <div class="card-top">
+      <div>
+        <div class="card-name">Remedy Meds</div>
+        <div class="card-descriptor">$200M+ ARR telehealth platform · 5 brands · Voice AI appointment booking</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge live">Live Customer</div>
+        <div class="badge vertical-badge health">Healthcare / Telehealth</div>
+      </div>
+    </div>
+    <div class="use-case">Voice AI live for appointment booking at a fast-growing telehealth platform — 2 years old, $200M+ ARR, actively acquiring brands. 80% of 500 employees are in support (400 agents). Giga protecting against TalkDesk's Autopilot push.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">🗓️</div>
+        <div class="metric-text">Went LIVE April 3, 2026 — <strong>Day 5: 26 calls handled, 8 appointments booked</strong></div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">👥</div>
+        <div class="metric-text"><strong>400 of 500 employees are support staff</strong> — massive ROI opportunity for AI containment</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🏢</div>
+        <div class="metric-text"><strong>5 brands and actively acquiring</strong> — multi-brand expansion potential from day one</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🛡️</div>
+        <div class="metric-text">Defending vs. <strong>TalkDesk Autopilot</strong> (launched 2026) — Giga anchoring as the AI conversation layer</div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Won</div>
+      Appointment booking use case that TalkDesk can't match at the conversational AI layer. Healthcare compliance + multi-brand architecture. Onsite pre-launch visit. Tyler + Jason + Augustin team ownership.
+    </div>
+    <div class="deal-size">
+      <span>Live · April 2026</span><span>5 brands · TalkDesk customer defending</span>
+    </div>
+  </div>
+
+  <!-- POSTMAN -->
+  <div class="card live" data-stage="live" data-vertical="tech" data-search="postman API developer tools chat support internal knowledge base first customer testimonial reference">
+    <div class="card-top">
+      <div>
+        <div class="card-name">Postman</div>
+        <div class="card-descriptor">API platform · One of Giga's first customers · Chat AI (live + in-build)</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge live">Live Customer</div>
+        <div class="badge vertical-badge tech">Developer Tools</div>
+      </div>
+    </div>
+    <div class="use-case">Two-agent architecture: external chat agent LIVE on Postman's public support page; internal chat agent (knowledge-base driven for support team) in active build. David Meng's testimonial is live on Giga's website.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">🥇</div>
+        <div class="metric-text"><strong>One of Giga's first-ever customers</strong> — long-term partnership, active reference for prospects</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">💬</div>
+        <div class="metric-text">External chat agent <strong>live on Postman's support page</strong> — public-facing deployment</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🏗️</div>
+        <div class="metric-text">Internal agent in build — <strong>knowledge-base driven for the support team itself</strong> (agent-assist use case)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🎙️</div>
+        <div class="metric-text"><strong>David Meng (Global Product Support Manager) testimonial on Giga's website</strong> — willing reference</div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Won</div>
+      Zero competitors — Giga holds the entire chat-AI seat at Postman. Internal + external agent architecture shows platform depth. David Meng is an active public reference.
+    </div>
+    <div class="deal-size">
+      <span>$15K expansion · Feb 2026</span><span>0 competitors · Public reference</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ ACTIVE PILOTS ═══════════════════ -->
+  <div class="section-header" data-section="pilot">
+    <span class="section-header-text pilot">● Active Pilots</span>
+    <div class="section-header-line"></div>
+    <span class="section-header-count" id="pilot-count"></span>
+  </div>
+
+  <!-- TOAST (LARGEST RESTAURANT FINTECH) -->
+  <div class="card pilot" data-stage="pilot" data-vertical="restaurant" data-search="restaurant fintech pos point of sale phone support resolution sierra intercom agents publicly traded">
+    <div class="card-top">
+      <div>
+        <div class="card-name">Largest Restaurant Fintech Company</div>
+        <div class="card-descriptor">Publicly traded · 2,000 support agents · vs. Sierra + Intercom</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge pilot">Active Pilot</div>
+        <div class="badge vertical-badge restaurant">Restaurant Tech</div>
+      </div>
+    </div>
+    <div class="use-case">Phone support AI for 2,000 customer service agents. First live traffic handled (2+ hours) — Giga "smashed the intent reasons." R&D team and Chief Design Officer are exec sponsors. Competing to displace Sierra + Intercom.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">📈</div>
+        <div class="metric-text">Resolution rate <strong>more than doubled in 2 months: 10% → ~23%</strong> vs. Sierra + Intercom incumbent</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🚫</div>
+        <div class="metric-text">35% of callers were immediately requesting live agents — <strong>Giga significantly reducing this</strong> with dynamic context + customer ID</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🎯</div>
+        <div class="metric-text">Key differentiators: <strong>background noise filtering</strong>, dynamic wait times, customer identification ("game changer")</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🏆</div>
+        <div class="metric-text">Sierra eliminated from competition — only offered 35 FDE hours/month and charged for them</div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Is Winning</div>
+      2x resolution improvement in 2 months. Sierra eliminated. Intercom throwing "EVERYTHING" at retention (services + price cuts) — Giga outperforming on outcomes alone.
+    </div>
+    <div class="deal-size">
+      <span>$300K · Stage 5 · Conditionally Approved</span><span>Contract review in progress</span>
+    </div>
+  </div>
+
+  <!-- ZILLOW (LARGEST REAL ESTATE TECH) -->
+  <div class="card pilot" data-stage="pilot" data-vertical="realestate" data-search="zillow real estate property rental email support salesforce genesys resolution rate revenue sales line">
+    <div class="card-top">
+      <div>
+        <div class="card-name">Largest Real Estate Tech Company</div>
+        <div class="card-descriptor">24 product lines · First email AI agent · Salesforce + Genesys</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge pilot">Active Pilot</div>
+        <div class="badge vertical-badge realestate">Real Estate</div>
+      </div>
+    </div>
+    <div class="use-case">Giga's first-ever email agent deployment — live on Salesforce. 24 product lines, ~450K agent reviews/year. A/B testing at 75/25 split. Pilot extended for expansion evaluation.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">📧</div>
+        <div class="metric-text"><strong>82% resolution rate on email support</strong> within 30 days of go-live — on in-scope intents</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">💰</div>
+        <div class="metric-text"><strong>~20% of out-of-scope traffic</strong> intelligently routed to the sales line — turning support into revenue</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🔬</div>
+        <div class="metric-text">First partner to test <strong>agentic communication across ALL product lines</strong> — A/B testing active (75/25 split)</div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Is Winning</div>
+      First-mover on email AI — no credible competitor offering. 82% resolution in 30 days AND turning out-of-scope traffic into sales pipeline. Pilot extended for expansion.
+    </div>
+    <div class="deal-size">
+      <span>$25K · Stage 4 · Pilot Extended</span><span>Expanding to additional channels</span>
+    </div>
+  </div>
+
+  <!-- FLEX -->
+  <div class="card pilot" data-stage="pilot" data-vertical="fintech" data-search="flex rent buy now pay later BNPL delinquency management voice chat lorikeet decagon sierra incumbent 7-figure">
+    <div class="card-top">
+      <div>
+        <div class="card-name">Flex</div>
+        <div class="card-descriptor">Rent BNPL platform · Beat 3 competitors · 3 use cases expanding</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge pilot">Active Customer</div>
+        <div class="badge vertical-badge fintech">Fintech</div>
+      </div>
+    </div>
+    <div class="use-case">Won voice after 2-month pilot vs. Lorikeet (incumbent). Now displacing Lorikeet's chat contract (~$1M/yr) AND expanding to delinquency management outbound + loan-based inbound/outbound. Head of AI is a Giga champion and available for reference calls.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">🏆</div>
+        <div class="metric-text">Beat <strong>Decagon, Sierra, AND Lorikeet</strong> (3 competitors) — even flipped Decagon's own champion to Giga's side</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">📈</div>
+        <div class="metric-text">Resolution rate: <strong>~40% → 65%</strong> on built-in SOPs</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">💵</div>
+        <div class="metric-text"><strong>$250K ACV on voice</strong> + displacing ~$1M/yr Lorikeet chat contract + delinquency management + loan outbound</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🚀</div>
+        <div class="metric-text">Projected <strong>7-figure account by end of year</strong> — momentum and buy-in across the entire org</div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Won</div>
+      200+ calendar invites + 1,000+ Slack messages — partnership depth won the deal. Flipped Decagon's champion. Multiple onsite visits + live coding during onsite. Shouwen (Head of AI) is an active reference.
+    </div>
+    <div class="deal-size">
+      <span>$250K ACV Voice · Chat + 2 more in progress</span><span>7-figure trajectory</span>
+    </div>
+  </div>
+
+  <!-- RAPPI -->
+  <div class="card pilot" data-stage="pilot" data-vertical="ecommerce" data-search="rappi latin america super app food delivery grocery pharmacy whatsapp assembled multi-intent">
+    <div class="card-top">
+      <div>
+        <div class="card-name">Rappi</div>
+        <div class="card-descriptor">Latin America super app · 2.3M chats/month · WhatsApp AI pilot</div>
+      </div>
+      <div class="card-badges">
+        <div class="badge stage-badge pilot">Active Pilot</div>
+        <div class="badge vertical-badge ecommerce">Super App / Delivery</div>
+      </div>
+    </div>
+    <div class="use-case">Latin America's leading super app (food, groceries, pharmacy, fintech, travel). 2.3M chat interactions/month today — 70% on Assembled (incumbent), 20% mixed, 10% human. Piloting on WhatsApp channel. Assembled contract expires in 5 months.</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-icon">💬</div>
+        <div class="metric-text"><strong>2.3M chat interactions/month</strong> — Assembled incumbent with expiring contract (5 months)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">⚠️</div>
+        <div class="metric-text">Assembled pain: <strong>slow agent creation, can't transfer between intents</strong>, no KPI visibility → customer sentiment declining</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">💰</div>
+        <div class="metric-text">Potential: <strong>$350K–$1M within 6 months</strong> after pilot (resolution-based pricing structure)</div>
+      </div>
+    </div>
+    <div class="win-reason">
+      <div class="win-reason-label">Why Giga Is Winning</div>
+      Assembled can't handle complex multi-intent or transfer between intents — Giga's core strength. Expiring Assembled contract creates urgency. Goal: knock it out of the park in 2-month pilot and take all 2.3M chats.
+    </div>
+    <div class="deal-size">
+      <span>$350K–$1M potential · 2-Month Pilot</span><span>WhatsApp · Assembled incumbent expiring</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="disclaimer">
+  <strong>⚠ Confidential — Internal Sales Use Only.</strong><br>
+  Do not reference AT&T, Toast, or Zillow by name in external communications. Use approved descriptors only.<br>
+  Per compliance guidance (May 2026): any written reference to AT&T requires approval from AT&T legal and supply chain.
+</div>
+
+<script>
+  const cards = Array.from(document.querySelectorAll('.card'));
+  const sectionHeaders = Array.from(document.querySelectorAll('.section-header'));
+  let activeStage = 'all';
+  let activeVertical = 'all';
+  let searchQuery = '';
+
+  function updateCards() {
+    let liveCount = 0, pilotCount = 0, visible = 0;
+
+    cards.forEach(card => {
+      const stage = card.dataset.stage;
+      const vertical = card.dataset.vertical;
+      const searchText = (card.dataset.search + ' ' + card.innerText).toLowerCase();
+
+      const stageMatch = activeStage === 'all' || stage === activeStage;
+      const verticalMatch = activeVertical === 'all' || vertical === activeVertical;
+      const searchMatch = searchQuery === '' || searchText.includes(searchQuery.toLowerCase());
+
+      if (stageMatch && verticalMatch && searchMatch) {
+        card.classList.remove('hidden');
+        visible++;
+        if (stage === 'live') liveCount++;
+        if (stage === 'pilot') pilotCount++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('result-count').textContent = visible;
+
+    // Update section count badges
+    const liveEl = document.getElementById('live-count');
+    const pilotEl = document.getElementById('pilot-count');
+    if (liveEl) liveEl.textContent = liveCount + ' accounts';
+    if (pilotEl) pilotEl.textContent = pilotCount + ' accounts';
+
+    // Show/hide section headers based on whether their section has visible cards
+    sectionHeaders.forEach(header => {
+      const section = header.dataset.section;
+      const hasVisible = cards.some(c => c.dataset.stage === section && !c.classList.contains('hidden'));
+      header.style.display = hasVisible ? 'flex' : 'none';
+    });
+
+    // Empty state
+    const existing = document.querySelector('.empty-state');
+    if (existing) existing.remove();
+    if (visible === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.innerHTML = '<h3>No accounts match your filters</h3><p>Try adjusting the stage or vertical filters, or clear your search.</p>';
+      document.getElementById('card-grid').appendChild(empty);
+    }
+  }
+
+  // Stage filters
+  document.getElementById('stage-filters').addEventListener('click', e => {
+    const pill = e.target.closest('[data-filter="stage"]');
+    if (!pill) return;
+    document.querySelectorAll('[data-filter="stage"]').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activeStage = pill.dataset.value;
+    updateCards();
+  });
+
+  // Vertical filters
+  document.getElementById('vertical-filters').addEventListener('click', e => {
+    const pill = e.target.closest('[data-filter="vertical"]');
+    if (!pill) return;
+    document.querySelectorAll('[data-filter="vertical"]').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activeVertical = pill.dataset.value;
+    updateCards();
+  });
+
+  // Search
+  document.getElementById('search').addEventListener('input', e => {
+    searchQuery = e.target.value;
+    updateCards();
+  });
+
+  updateCards();
+</script>
+</body>
+</html>
